@@ -6,8 +6,8 @@ from datetime import datetime
 from pytz import utc
 
 data = pandas.read_csv("reviews.csv",parse_dates=['Timestamp'])
-data['Week'] = data['Timestamp'].dt.strftime('%Y-%U')
-week_average = data.groupby(['Week']).mean()
+data['Month'] = data['Timestamp'].dt.strftime('%Y-%m')
+month_average = data.groupby(['Month']).mean()
 
 # Every JustPy app will have a main object that is known as a Quasar page (Web page)
 # JustPy uses the quasar framework built with Javascript that is why it is called as Quasar page
@@ -78,10 +78,10 @@ def app():
     h1=jp.QDiv(a=wp, text="Analysis of course reviews", classes="text-h3 text-center q-pa-md")      # Add elements that this page is going to contain. QDiv = Quasar Division
     p1=jp.QDiv(a=wp, text="These graphs represent course review analysis")
     hc=jp.HighCharts(a=wp, options=chart_def)
-    hc.options.title.text = "Average Rating by Week"
+    hc.options.title.text = "Average Rating by Month"
     
-    hc.options.xAxis.categories = list(week_average.index)
-    hc.options.series[0].data = list(week_average['Rating'])
+    hc.options.xAxis.categories = list(month_average.index)
+    hc.options.series[0].data = list(month_average['Rating'])
 
     return wp
 
